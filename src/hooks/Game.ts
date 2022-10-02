@@ -1,5 +1,3 @@
-import React from "react";
-
 let knightPosition = [1, 7];
 
 // knightPositionが入る変数

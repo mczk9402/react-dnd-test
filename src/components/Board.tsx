@@ -1,10 +1,8 @@
-import React, { FC, ReactNode } from "react";
+import { FC, ReactNode } from "react";
 import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { canMoveKnight, moveKnight } from "../hooks/Game";
 import { BoardSquare } from "./BoardSquare";
 import { Knight } from "./Knight";
-import { Square } from "./Square";
+import { TouchBackend } from "react-dnd-touch-backend";
 
 type Props = {
   knightPosition: number[];
@@ -13,11 +11,6 @@ type Props = {
 type RenderSquare = (i: number, knightXY: number[]) => ReactNode;
 
 type RenderPiece = (x: number, y: number, knightXY: number[]) => ReactNode;
-
-const handleSquareClick = (toX: number, toY: number) => {
-  if (!canMoveKnight(toX, toY)) return;
-  moveKnight(toX, toY);
-};
 
 const renderSquare: RenderSquare = (i, knightPosition) => {
   const x = i % 8;
@@ -38,6 +31,10 @@ const renderPiece: RenderPiece = (x, y, [knightX, knightY]) => {
   }
 };
 
+const touchOptions = {
+  enableMouseEvents: true,
+};
+
 export const Board: FC<Props> = ({ knightPosition }) => {
   const squares = [];
 
@@ -46,7 +43,7 @@ export const Board: FC<Props> = ({ knightPosition }) => {
   }
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DndProvider backend={TouchBackend} options={touchOptions}>
       <div
         style={{
           width: "100%",
